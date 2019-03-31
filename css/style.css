@@ -50,10 +50,27 @@ ul .do {
   font-style: italic;
   margin-left: -60px;
   box-shadow: 2px 2px 2px 2px #888888;
+  text-align: center;
 }
 
 ul .done {
   text-decoration: line-through;
   color: red;
   background: rgb(248, 183, 183);
+}
+
+.ckbox {
+  float: left;
+}
+
+.deleteTask {
+  float: right;
+  background: rgba(250, 247, 247, 0);
+  color: red;
+  border: 0;
+}
+
+.deleteTask:hover {
+  cursor: pointer;
+  border-radius: 20px;
 }
