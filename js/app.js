@@ -34,7 +34,7 @@ document.querySelector("button").addEventListener("click", () => {
 });
 
 const handlerClickState = () => {
-  const items = document.querySelectorAll("li");
+  const items = document.querySelectorAll("div");
   items.forEach(li => {
     li.onchange = () => {
       if (li.className == "do") {
