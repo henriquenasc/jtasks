@@ -1,8 +1,13 @@
-const ul = document.querySelector("ul");
 document.querySelector("button").addEventListener("click", () => {
   const tasks = document.getElementById("tasks");
+  const ul = document.querySelector("ul");
+  const form = document.querySelector("form");
 
-  let li = document.createElement("li");
+  form.onsubmit = function(e) {
+    e.preventDefault();
+  };
+
+  let li = document.createElement("div");
   let text = document.createTextNode(tasks.value);
   li.appendChild(text);
   li.classList.add("do");
