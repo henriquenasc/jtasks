@@ -1,47 +1,88 @@
-document.querySelector("button").addEventListener("click", () => {
-  const tasks = document.getElementById("tasks");
-  const ul = document.querySelector("ul");
-  const form = document.querySelector("form");
+const url = "http://localhost:3333/tasks/";
 
-  form.onsubmit = function(e) {
-    e.preventDefault();
-  };
-
-  let li = document.createElement("div");
-  let text = document.createTextNode(tasks.value);
-  li.appendChild(text);
-  li.classList.add("do");
-
-  let btnRemove = document.createElement("button");
-  let textRemove = document.createTextNode("remove");
-  btnRemove.appendChild(textRemove);
-  btnRemove.classList.add("deleteTask");
-  li.appendChild(btnRemove);
-
-  let ckbox = document.createElement("input");
-  ckbox.setAttribute("type", "checkbox");
-  ckbox.classList.add("ckbox");
-  li.appendChild(ckbox);
-
-  ul.appendChild(li);
-  tasks.value = "";
-
-  btnRemove.onclick = function() {
-    ul.removeChild(li);
-  };
-
-  handlerClickState();
+document.querySelector("form").addEventListener("submit", e => {
+  e.preventDefault();
+  const task = document.getElementById("task");
+  addTask(task.value);
+  task.value = "";
 });
 
-const handlerClickState = () => {
-  const items = document.querySelectorAll("div");
-  items.forEach(li => {
-    li.onchange = () => {
-      if (li.className == "do") {
-        li.classList.add("done");
-      } else {
-        li.classList.remove("done");
-      }
-    };
+function getTasks() {
+  const headers = new Headers();
+  headers.append("Access-Control-Allow-Origin", "*");
+  headers.append("Content-Type", "application/json");
+  headers.append("Access-Control-Allow-Headers", "Content-Type");
+
+  const config = {
+    method: "get",
+    headers
+  };
+
+  fetch(url, config)
+    .then(resp => resp.json())
+    .then(resp => renderTasks(resp))
+    .catch(err => console.log(err));
+}
+
+function renderTasks(tasks) {
+  const ul = document.getElementById("task-list");
+  let li = "";
+  tasks.map(task => {
+    li += `<li class="task"><input type="checkbox" onchange="changeStatus(${
+      task.id
+    })" class="ckbox" />${task.title}<a class="deleteTask" onclick="delTask(${
+      task.id
+    })">apagar</a></li>`;
   });
-};
+  ul.innerHTML = li;
+}
+
+function delTask(_id) {
+  const payload = {
+    id: _id
+  };
+
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+
+  const config = {
+    method: "delete",
+    headers,
+    body: JSON.stringify(payload)
+  };
+
+  const url = `http://localhost:3333/tasks/${_id}`;
+  fetch(url, config)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+  window.location.reload();
+}
+
+function changeStatus(task) {
+  console.log(task);
+}
+
+function addTask(title) {
+  const payload = {
+    title: title
+  };
+
+  const headers = new Headers();
+  headers.append("Access-Control-Allow-Origin", "*");
+  headers.append("Content-Type", "application/json");
+  headers.append("Access-Control-Allow-Headers", "Content-Type");
+
+  const config = {
+    method: "post",
+    headers,
+    body: JSON.stringify(payload)
+  };
+
+  fetch(url, config)
+    .then(resp => resp.json())
+    .then(resp => console.log(resp))
+    .catch(err => console.log(err));
+  window.location.reload();
+}
+
+getTasks();
