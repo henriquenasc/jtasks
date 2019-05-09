@@ -28,11 +28,9 @@ function renderTasks(tasks) {
   const ul = document.getElementById("task-list");
   let li = "";
   tasks.map(task => {
-    li += `<li class="task"><input type="checkbox" onchange="changeStatus(${
-      task.id
-    })" class="ckbox" />${task.title}<a class="deleteTask" onclick="delTask(${
-      task.id
-    })">apagar</a></li>`;
+    li += `<li class="task">${
+      task.title
+    }<a class="deleteTask" onclick="delTask(${task.id})">apagar</a></li>`;
   });
   ul.innerHTML = li;
 }
