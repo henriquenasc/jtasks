@@ -30,7 +30,7 @@ function renderTasks(tasks) {
   tasks.map(task => {
     li += `<li class="task">${
       task.title
-    }<a class="deleteTask" onclick="delTask(${task.id})">apagar</a></li>`;
+    }<a class="deleteTask" onclick="delTask('${task._id}')">apagar</a></li>`;
   });
   ul.innerHTML = li;
 }
@@ -49,15 +49,12 @@ function delTask(_id) {
     body: JSON.stringify(payload)
   };
 
-  const url = `http://localhost:3333/tasks/${_id}`;
+  const url = `http://localhost:3333/tasks/${payload.id}`;
+  console.log(url);
   fetch(url, config)
     .then(res => res.json())
     .catch(err => console.log(err));
   window.location.reload();
-}
-
-function changeStatus(task) {
-  console.log(task);
 }
 
 function addTask(title) {
